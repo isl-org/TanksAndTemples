@@ -1,7 +1,7 @@
-# TanksAndTemples
+# Tanks and Temples - Python script
 This repository provides two python scripts:
 - upload-t2-result.py : for submitting result for evaluation.
-- download_t2_dataset.py : for download dataset from website.
+- download_t2_dataset.py : for downloading dataset from website.
 
 Please cite following paper if you are using this software.
 
@@ -16,11 +16,12 @@ Please cite following paper if you are using this software.
 }
 ```
 
-For more details, please visit tanksandtemples.org
+For more details, please visit [tanksandtemples.org](http:\\tanksandtemples.org)
 
 ## Requirements
 These scripts are tested on Python 2.7 and Python 3.x.
-Python 2.7 users, need to install `requests` package using following command
+
+Python 2.7 users need to install `requests` package using following command
 ```
 sudo pip install requests
 ```
