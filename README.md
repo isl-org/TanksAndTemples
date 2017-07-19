@@ -25,11 +25,11 @@ Example 3: show the status of downloaded data
 
 Usage of uploader:
 ```
-> python upload-t2-results.py [-h] [--group GROUP]
+> python upload_t2_results.py [-h] [--group GROUP]
 
 Example 1: upload intermediate and advanced reconstruction results
-> python upload-t2-results.py --group both
+> python upload_t2_results.py --group both
 
 Example 2: upload only intermediate results
-> python upload-t2-results.py --group intermediate
+> python upload_t2_results.py --group intermediate
 ```
