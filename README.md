@@ -1,33 +1,15 @@
-# Tanks and Temples - Python script
-This repository provides two python scripts:
-- upload-t2-result.py : for submitting result for evaluation.
-- download_t2_dataset.py : for downloading dataset from website.
+# Tanks and Temples
 
-Please cite following paper if you are using this software.
+This repository is used for discussing issues regarding the website that hosts the *Tanks and Temples* dataset.  
+http://www.tanksandtemples.org
 
-```
-@article{Knapitsch2017,
-    author    = {Arno Knapitsch and Jaesik Park and Qian-Yi Zhou and Vladlen Koltun},
-    title     = {Tanks and Temples: Benchmarking Large-Scale Scene Reconstruction},
-    journal   = {ACM Transactions on Graphics},
-    volume    = {36},
-    number    = {4},
-    year      = {2017},
-}
-```
+In order to submit your reconstruction algorithm for evaluation, you need to download the datasets from the website, reconstruct 3d geometry, submit your results to the website, get evaluated, and be put on the leaderboard. Please follow the instructions on the website. If you encounter any problem, first check if the problem is listed on [FAQ](faq.md). If not, go to the [issues page](issues) to search if there is any duplicate of your problem. If not, file an issue and we will respond as fast as we can. Alternatively, you can send an email to [info@tanksandtemples.org](mailto:info@tanksandtemples.org).
 
-For more details, please visit [tanksandtemples.org](http:\\tanksandtemples.org)
+## Python scripts
 
-## Requirements
-These scripts are tested on Python 2.7 and Python 3.x.
+The [python_toolbox](python_toolbox) folder includes the python script for downloading dataset and uploading reconstruction results. The files are under the [MIT license](LICENSE). The dataset itself has a different license, see [this page](https://tanksandtemples.org/license/) for details.
 
-Python 2.7 users need to install `requests` package using following command
-```
-sudo pip install requests
-```
-
-## Usage
-Downloader
+Usage of downloader:
 ```
 > python download_t2_dataset.py [-h] [-s] [--modality MODALITY] [--group GROUP] [--unpack_off] [--calc_md5_off]
 
@@ -41,7 +23,7 @@ Example 3: show the status of downloaded data
 > python download_t2_dataset.py -s
 ```
 
-Uploader
+Usage of uploader:
 ```
 > python upload-t2-results.py [-h] [--group GROUP]
 

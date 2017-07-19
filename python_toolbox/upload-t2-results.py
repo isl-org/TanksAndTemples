@@ -1,12 +1,14 @@
 # ----------------------------------------------------------------------------
-# -                        Open3D: www.open3d.org                            -
+# -                   TanksAndTemples Website Toolbox                        -
+# -                    http://www.tanksandtemples.org                        -
 # ----------------------------------------------------------------------------
 # The MIT License (MIT)
 #
-# Copyright (c) 2017 Arno Knapitsch <arno.knapitsch@gmail.com >
-#                    Jaesik Park <syncle@gmail.com>
-#                    Qian-Yi Zhou <Qianyi.Zhou@gmail.com>
-#                    Vladlen Koltun <vkoltun@gmail.com>
+# Copyright (c) 2017
+# Arno Knapitsch <arno.knapitsch@gmail.com >
+# Jaesik Park <syncle@gmail.com>
+# Qian-Yi Zhou <Qianyi.Zhou@gmail.com>
+# Vladlen Koltun <vkoltun@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +24,12 @@
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-# IN THE SOFTWARE.
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
 # ----------------------------------------------------------------------------
 #
-# This script is for uploading reconstruction result to
-# www.tanksandtemples.org
-# If you are using this software, please refer following paper.
-#
-# @article{Knapitsch2017,
-#    author    = {Arno Knapitsch and Jaesik Park and Qian-Yi Zhou and Vladlen Koltun},
-#    title     = {Tanks and Temples: Benchmarking Large-Scale Scene Reconstruction},
-#    journal   = {ACM Transactions on Graphics},
-#    volume    = {36},
-#    number    = {4},
-#    year      = {2017},
-#}
+# This python script is for uploading results to www.tanksandtemples.org
 #
 # Requirements:
 # 	sudo pip install requests (requests is not included in python 2.7)
