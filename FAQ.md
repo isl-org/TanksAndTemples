@@ -1,4 +1,4 @@
-# Frequent Asked Questions
+# Frequently Asked Questions
 
 ### Should I start with video or image set?
 The image sets are sampled frames from the video. We provide it because many off-the-shelf reconstruction systems cannot directly take videos as input. For beginners, start with image sets. You can also refer to [this tutorial page](https://tanksandtemples.org/tutorial/) for instructions on how to setup a workable system. For advanced users, please work with the videos since they are the raw 4K videos we captured with a high end camera.
