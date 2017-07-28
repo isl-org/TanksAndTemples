@@ -34,7 +34,6 @@
 import sys
 import math
 import numpy as np
-from scipy.interpolate import interp1d
 
 class CameraPose:
 	def __init__(self, meta, mat):
@@ -144,7 +143,7 @@ if __name__ == "__main__":
 		print('[number of desired number of interpolated poses]')
 		print('[Image ID] [video frame ID]')
 		print(': (repeats)')
-		quit()
+		sys.exit()
 
 	# read files
 	trajectory = read_trajectory(sys.argv[1])
@@ -165,9 +164,8 @@ if __name__ == "__main__":
 	for iter in range(6):
 		pose_element_slice = pose_matrix[:, iter]
 		pose_frame_id = mapping[:, 1]
-		f = interp1d(pose_frame_id, pose_element_slice,
-				kind='cubic', fill_value='extrapolate')
-		pose_matrix_interpolation[:, iter] = f(pose_frame_desired)
+		pose_matrix_interpolation[:, iter] = np.interp(
+     			pose_frame_desired, pose_frame_id, pose_element_slice)
 
 	# transform interpolated vector to SE(3) and output result
 	traj_interpolated = []
