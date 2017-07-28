@@ -135,6 +135,8 @@ if __name__ == "__main__":
 	if len(sys.argv) != 4:
 		print('Usage : python %s [input_log] [mapping_txt_file] [output_log]'
 				% sys.argv[0])
+		print('Example : python %s ../test_data/test.log ../test_data/mapping.txt ../test_data/test_interpolated.log'
+				% sys.argv[0])
 		print('')
 		print('Convention of [input_log]')
 		print('[frame ID] [frame ID] 0')
