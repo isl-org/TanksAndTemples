@@ -29,9 +29,7 @@
 # THE SOFTWARE.
 # ----------------------------------------------------------------------------
 #
-# This python script is for downloading dataset from www.tanksandtemples.org
-# The dataset has a different license, please refer to
-# https://tanksandtemples.org/license/
+# This python script is for interpolating camera poses
 
 import sys
 import math
@@ -74,13 +72,11 @@ def read_mapping(filename):
 		n_sampled_frames = int(f.readline())
 		n_total_frames = int(f.readline())
 		mapping = np.zeros(shape = (n_sampled_frames, 2))
-		iter = 0
 		metastr = f.readline()
-		while metastr:
+		for iter in range(n_sampled_frames):
 			metadata = list(map(int, metastr.split()))
 			mapping[iter, :] = metadata
 			metastr = f.readline()
-			iter = iter + 1
 	return [n_sampled_frames, n_total_frames, mapping]
 
 def transform_matrix_4d_to_vector_6d(pose):
@@ -113,7 +109,6 @@ def euler_2_rotation_matrix(x, y, z):
 
 def transform_vector_6d_to_matrix_4d(pose_vec):
 	pose = np.identity(4)
-	#print(pose_vec)
 	pose[0:3, 3] = pose_vec[3:]
 	pose[0:3, 0:3] = euler_2_rotation_matrix(
 			pose_vec[0], pose_vec[1], pose_vec[2])
