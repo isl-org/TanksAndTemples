@@ -1,4 +1,39 @@
 #!/usr/bin/env python
+#
+# ----------------------------------------------------------------------------
+# -                   TanksAndTemples Website Toolbox                        -
+# -                    http://www.tanksandtemples.org                        -
+# ----------------------------------------------------------------------------
+# The MIT License (MIT)
+#
+# Copyright (c) 2017
+# Arno Knapitsch <arno.knapitsch@gmail.com >
+# Jaesik Park <syncle@gmail.com>
+# Qian-Yi Zhou <Qianyi.Zhou@gmail.com>
+# Vladlen Koltun <vkoltun@gmail.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+# ----------------------------------------------------------------------------
+#
+# Python script to convert COLMAP SfM data into the tanksandtempls log file format
+# Example: python get_colmap_SfM_logfile.py [COLMAP SfM file] [output log-filename] [folder of the input images] [image format]
+
 import sys
 import glob
 import numpy as np
@@ -47,12 +82,12 @@ def quat2rotmat(qvec):
 
 
 
-def convert_to_log(args):
+def convert_to_log(argv):
 	
-	filename = sys.argv[1] 
-	logfile_out = sys.argv[2] 
-	input_images = sys.argv[3]
-	formatp = sys.argv[4]
+	filename = argv[1] 
+	logfile_out = argv[2] 
+	input_images = argv[3]
+	formatp = argv[4]
 	lines = open(filename).read().split('\n')
 	nr_of_views = int(len(lines)-5)/2
 	jpg_list = glob.glob(input_images+'/*.'+formatp)
@@ -103,4 +138,4 @@ def convert_to_log(args):
 	write_SfM_log(TF, i_mapF, logfile_out)
 
 if __name__ == '__main__':
-    convert_to_log(sys.argv[1:])
+    convert_to_log(sys.argv)
