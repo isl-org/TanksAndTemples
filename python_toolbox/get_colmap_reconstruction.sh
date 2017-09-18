@@ -32,7 +32,7 @@
 # ----------------------------------------------------------------------------
 #
 # This script generates a COLMAP reconstruction from a numbe rof input imagess
-# Usage: sh get_colmap_reconstruction.sh input_folder/ output_folder/
+# Usage: sh get_colmap_reconstruction.sh <COLMAP-exe-directory> <image-set-directory> <project-directory>
 
 colmap_folder=$1/
 iname=$2/
