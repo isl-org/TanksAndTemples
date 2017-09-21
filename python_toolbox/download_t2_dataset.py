@@ -267,8 +267,8 @@ def print_status(sequences, modality, pathname, intermediate_list, advanced_list
 
 
 if __name__ == "__main__":
-	link_gc ='https://storage.googleapis.com/t2-data/videos/'
-	link_gc_is = 'https://storage.googleapis.com/t2-data/image_sets/'
+	link_gc ='https://storage.googleapis.com/t2-downloads/videos/'
+	link_gc_is = 'https://storage.googleapis.com/t2-downloads/image_sets/'
 	intermediate_list = ['Family','Francis','Horse','Lighthouse','M60','Panther','Playground','Train']
 	advanced_list = ['Auditorium','Ballroom','Courtroom','Museum','Palace','Temple']
 

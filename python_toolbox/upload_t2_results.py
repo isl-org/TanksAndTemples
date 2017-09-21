@@ -95,10 +95,10 @@ def submit_file(filename, credentials_upload):
 	files = {'file': open(filename,'rb')}
 	gs_acl = 'bucket-owner-read'
 	headers = {'enctype': 'multipart/form-data'}
-	bucket_name = 't2-userdata'
+	bucket_name = 't2-website-userdata'
 	policy = {}
 	policy['key'] = gcs_filename
-	policy['bucket'] = 't2-userdata'
+	policy['bucket'] = 't2-website-userdata'
 	policy['acl'] = gs_acl
 
 	policy['GoogleAccessId'] = client_id_email
