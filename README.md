@@ -3,7 +3,7 @@
 This repository is used for discussing issues regarding the website that hosts the *Tanks and Temples* dataset.  
 http://www.tanksandtemples.org
 
-In order to evaluate your reconstruction algorithm on our benchmark, you need to download the dataset, reconstruct 3d geometry, submit your results, get evaluated, and be put on the leaderboard. Please follow the instructions on the website. If you encounter any problem, first check if the problem is listed on [FAQ](FAQ.md). If not, go to the [issues page](https://github.com/IntelVCL/TanksAndTemples/issues) to search if there is any duplicate of your problem. If not, file an issue and we will respond as fast as we can. Alternatively, you can send an email to [info@tanksandtemples.org](mailto:info@tanksandtemples.org).
+In order to evaluate your reconstruction algorithm on our benchmark, you need to download the dataset, reconstruct 3d geometry, submit your results, get evaluated, and be put on the leaderboard. Please follow the instructions on the website. If you encounter any problem, first check if the problem is listed on [FAQ](FAQ.md). If not, go to the [issues page](https://github.com/IntelVCL/TanksAndTemples/issues) to search if there is any duplicate of your problem. If not, file an issue and we will respond as fast as we can. Alternatively, you can send an email to [info.tanksandtemples@ivcl.org](mailto:info.tanksandtemples@ivcl.org).
 
 ## Python scripts
 
