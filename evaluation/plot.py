@@ -1,5 +1,5 @@
 
-import matplotlib.pyplot as
+import matplotlib.pyplot as plt
 
 
 def plot_graph(fscore, edges_source, cum_source, edges_target, cum_target):
