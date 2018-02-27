@@ -9,8 +9,9 @@ def read_alignment_transformation(filename):
 	return np.asarray(data['transformation']).reshape((4, 4)).transpose()
 
 
-def EvaluateHisto(source, target, trans, crop_volume, voxel_size, threshold, filename_mvs, plot_stretch, scene_name):
-
+def EvaluateHisto(source, target, trans, crop_volume, voxel_size, threshold,
+		filename_mvs, plot_stretch, scene_name, verbose = True):
+	print("[EvaluateHisto]")
 	set_verbosity_level(VerbosityLevel.Debug)
 	s = copy.deepcopy(source)
 	s.transform(trans)
@@ -72,31 +73,33 @@ def EvaluateHisto(source, target, trans, crop_volume, voxel_size, threshold, fil
 #
 #
 #
+	[precision, recall, fscore, edges_source, cum_source,
+			edges_target, cum_target] = get_f1_score_histo2(
+			threshold, filename_mvs, plot_stretch, distance1, distance2)
+	np.savetxt(filename_mvs+"/" + scene_name + ".recall.txt", cum_target)
+	np.savetxt(filename_mvs+"/" + scene_name + ".precision.txt", cum_source)
+	np.savetxt(filename_mvs+"/" + scene_name + ".prf_tau_plotstr.txt",
+			np.array([precision, recall, fscore, threshold, plot_stretch]))
+
+	return [precision, recall, fscore, edges_source,
+			cum_source, edges_target, cum_target]
 
 
-	[precision, recall, fscore, edges_source, cum_source, edges_target, cum_target] = get_f1_score_histo2(threshold, filename_mvs, plot_stretch, distance1, distance2)
-	np.savetxt(filename_mvs+"/" + scene_name + ".recall.txt",cum_target)
-	np.savetxt(filename_mvs+"/" + scene_name + ".precision.txt",cum_source)
-	np.savetxt(filename_mvs+"/" + scene_name + ".prf_tau_plotstr.txt",np.array([precision, recall, fscore, threshold, plot_stretch]))
-
-
-	return [precision, recall, fscore, edges_source, cum_source, edges_target, cum_target]
-
-
-def get_f1_score_histo2(threshold, filename_mvs, plot_stretch, distance1, distance2):
-	# plot_stretch = 5
-
+def get_f1_score_histo2(threshold, filename_mvs,
+		plot_stretch, distance1, distance2, verbose = True):
+	print("[get_f1_score_histo2]")
 	dist_threshold = threshold
 	if(len(distance1) and len(distance2)):
 
-		recall = float(sum(d < threshold for d in distance2)) / float(len(distance2))
-		precision = float(sum(d < threshold for d in distance1)) / float(len(distance1))
+		recall = float(sum(d < threshold for d in distance2)) / \
+				float(len(distance2))
+		precision = float(sum(d < threshold for d in distance1)) / \
+				float(len(distance1))
 		fscore = 2 * recall * precision / (recall + precision)
 		num = len(distance1)
 		bins = np.arange(0, dist_threshold*plot_stretch , dist_threshold / 100)
 		hist, edges_source = np.histogram(distance1, bins)
 		cum_source = np.cumsum(hist).astype(float) / num
-
 
 		num = len(distance2)
 		bins = np.arange(0, dist_threshold*plot_stretch , dist_threshold / 100)
@@ -112,4 +115,5 @@ def get_f1_score_histo2(threshold, filename_mvs, plot_stretch, distance1, distan
 		edges_target = np.array([0])
 		cum_target = np.array([0])
 
-	return [precision, recall, fscore, edges_source, cum_source, edges_target, cum_target] #source = precission, target = recall
+	return [precision, recall, fscore, edges_source, cum_source,
+			edges_target, cum_target]
