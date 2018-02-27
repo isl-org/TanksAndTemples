@@ -1,7 +1,43 @@
+# ----------------------------------------------------------------------------
+# -                   TanksAndTemples Website Toolbox                        -
+# -                    http://www.tanksandtemples.org                        -
+# ----------------------------------------------------------------------------
+# The MIT License (MIT)
+#
+# Copyright (c) 2017
+# Arno Knapitsch <arno.knapitsch@gmail.com >
+# Jaesik Park <syncle@gmail.com>
+# Qian-Yi Zhou <Qianyi.Zhou@gmail.com>
+# Vladlen Koltun <vkoltun@gmail.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+# ----------------------------------------------------------------------------
+#
+# This python script is for downloading dataset from www.tanksandtemples.org
+# The dataset has a different license, please refer to
+# https://tanksandtemples.org/license/
+
 import json
 import copy
+import os
 import numpy as np
-from setup_open3d import *
+from setup import *
 
 def read_alignment_transformation(filename):
 	with open(filename) as data_file:
@@ -17,62 +53,45 @@ def EvaluateHisto(source, target, trans, crop_volume, voxel_size, threshold,
 	s.transform(trans)
 	s = crop_volume.crop_point_cloud(s)
 	s = voxel_down_sample(s, voxel_size)
+	estimate_normals(s, search_param = KDTreeSearchParamKNN(knn = 20))
 	print(filename_mvs+"/" + scene_name + ".precision.ply")
-#	write_point_cloud(filename_mvs+"/" + scene_name + ".precision.ply", s)
-#	write_point_cloud(filename_mvs+"/" + scene_name + ".precision.ncb.ply", s)
-#
+
 	t = copy.deepcopy(target)
 	t = crop_volume.crop_point_cloud(t)
 	t = voxel_down_sample(t, voxel_size)
-#	write_point_cloud(filename_mvs+"/" + scene_name + ".recall.ply", t)
-
+	estimate_normals(t, search_param = KDTreeSearchParamKNN(knn = 20))
+	print("[compute_point_cloud_to_point_cloud_distance]")
 	distance1 = compute_point_cloud_to_point_cloud_distance(s, t)
+	print("[compute_point_cloud_to_point_cloud_distance]")
 	distance2 = compute_point_cloud_to_point_cloud_distance(t, s)
 
+	# write the distances to bin files
+	np.array(distance1).astype('float64').tofile(
+			filename_mvs + "/" + scene_name + ".precision.bin")
+	np.array(distance2).astype('float64').tofile(
+			filename_mvs + "/" + scene_name + ".recall.bin")
 
-#   # write the distances to bin files
-#	np.array(distance1).astype('float64').tofile(filename_mvs+"/" + scene_name + ".precision.bin")
-#	np.array(distance2).astype('float64').tofile(filename_mvs+"/" + scene_name + ".recall.bin")
+	# Colorize the poincloud files prith the precision and recall values
+	write_point_cloud(filename_mvs+"/" + scene_name + ".precision.ply", s)
+	write_point_cloud(filename_mvs+"/" + scene_name + ".precision.ncb.ply", s)
+	write_point_cloud(filename_mvs+"/" + scene_name + ".recall.ply", t)
 
-# bin_dir = '/Users/jaesikpa/Research/Open3D/build/bin/'
-# import os
+	source_n_fn = filename_mvs + "/" + scene_name + ".precision.ply"
+	target_n_fn = filename_mvs + "/" + scene_name + ".recall.ply"
 
-#   #############################################################################
-#   # Colorize the poincloud files prith the precision and recall values
-#   #############################################################################
-#	write_point_cloud(filename_mvs+"/" + scene_name + ".precision.ply", s)
-#	write_point_cloud(filename_mvs+"/" + scene_name + ".precision.ncb.ply", s)
-#
-#	write_point_cloud(filename_mvs+"/" + scene_name + ".recall.ply", t)
+	print('[ViewDistances] Add color coding to visualize error')
+	eval_str_viewDT = OPEN3D_EXPERIMENTAL_BIN_PATH + \
+			"ViewDistances " + source_n_fn + " --max_distance " + \
+			str(threshold*3) + " --write_color_back --without_gui"
+	os.system(eval_str_viewDT)
 
-#    knn = 20
-#	target_n_fn_knn = filename_mvs + "/" + scene_name + ".recall_" + str(knn) + ".ply"
-#	source_n_fn_knn = filename_mvs + "/" + scene_name + ".precision_" + str(knn) + ".ply"
-#
-#	source_n_fn = filename_mvs + "/" + scene_name + ".precision.ply"
-#	#source_ncb_fn = filename_mvs + "/alignment.source.ncb.ply"
-#	target_n_fn = filename_mvs + "/" + scene_name + ".recall.ply"
-#
-#	eval_str_viewDT = bin_dir + "ViewDistances " + source_n_fn + " --max_distance " + str(threshold*3) + " --write_color_back --without_gui"
-#	os.system(eval_str_viewDT)
-#
-#
-#
-#	eval_str_viewDT = bin_dir + "ViewDistances " + target_n_fn + " --max_distance " + str(threshold*3) + " --write_color_back --without_gui"
-#	os.system(eval_str_viewDT)
-#
-#
-#
-#	eval_str_convert_n_s = bin_dir + "ConvertPointCloud " + source_n_fn + " " + source_n_fn_knn + " --estimate_normals_knn " + str(knn)
-#	print(eval_str_convert_n_s)
-#	os.system(eval_str_convert_n_s)
-#
-#	eval_str_convert_n_t = bin_dir + "ConvertPointCloud " + target_n_fn + " " + target_n_fn_knn + " --estimate_normals_knn " + str(knn)
-#	print(eval_str_convert_n_t)
-#	os.system(eval_str_convert_n_t)
-#
-#
-#
+	print('[ViewDistances] Add color coding to visualize error')
+	eval_str_viewDT = OPEN3D_EXPERIMENTAL_BIN_PATH + \
+			"ViewDistances " + target_n_fn + " --max_distance " + \
+			str(threshold*3) + " --write_color_back --without_gui"
+	os.system(eval_str_viewDT)
+
+	# get histogram and f-score
 	[precision, recall, fscore, edges_source, cum_source,
 			edges_target, cum_target] = get_f1_score_histo2(
 			threshold, filename_mvs, plot_stretch, distance1, distance2)

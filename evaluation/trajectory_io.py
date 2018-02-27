@@ -1,4 +1,4 @@
-from setup_open3d import *
+from setup import *
 import numpy as np
 
 class CameraPose:
