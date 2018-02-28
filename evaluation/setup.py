@@ -38,7 +38,7 @@
 # INSTRUCTION
 # ----------------------------------------------------------------------------
 
-# STEP 0) Specify the path where dataset folder is located.
+# STEP 0) Specify the path where training dataset folder is located.
 # for example,
 # BASE_DIR = "C:/TanksAndTemples/evaluation/data/"
 BASE_DIR = "C:/git/TanksAndTemples/evaluation/data/"
@@ -47,35 +47,32 @@ BASE_DIR = "C:/git/TanksAndTemples/evaluation/data/"
 # to install Open3D, please start from http://open3d.org/docs/getting_started.html
 
 # STEP 2) specify path to where Open3D build is
-# for example, modify and use one of these
-# OPEN3D_BUILD_PATH = 'C:/Open3D/build/' # Windows
-# OPEN3D_BUILD_PATH = '/Users/[user_id]/Open3D/build/' # Mac
-# OPEN3D_BUILD_PATH = '/home/[user_id]/Open3D/build/' # Ubuntu
-OPEN3D_BUILD_PATH = 'C:/git/Open3D/build/'
+# For example, modify and use one of these
+# OPEN3D_BUILD_PATH = "C:/Open3D/build/" # Windows
+# OPEN3D_BUILD_PATH = "/Users/[user_id]/Open3D/build/" # Mac/Ubuntu
+OPEN3D_BUILD_PATH = "C:/git/Open3D/build/"
 
 # STEP 3) specify path to where
 # py3d.so, py3d_[python_version].so or py3d.lib is located
-# for example, use one of these
-OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + 'lib/Release/' # Windows
-# OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + 'lib/' # Mac
-# OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + 'lib/' # Ubuntu
+# For example, use one of these
+OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + "lib/Release/" # Windows
+# OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + "lib/" # Mac/Ubuntu
 
 # STEP 4) specify path to where
-# Open3D's experimental applications (ViewDistances and ConvertPointCloud)
-# for example, use one of these
-OPEN3D_EXPERIMENTAL_BIN_PATH = OPEN3D_BUILD_PATH + 'bin/Experimental/Release/' # Windows
-# OPEN3D_EXPERIMENTAL_BIN_PATH = OPEN3D_BUILD_PATH + 'bin/Experimental/' # Mac
-# OPEN3D_EXPERIMENTAL_BIN_PATH = OPEN3D_BUILD_PATH + 'bin/Experimental/' # Ubuntu
+# Open3D"s experimental applications (ViewDistances and ConvertPointCloud)
+# For example, use one of these
+OPEN3D_EXPERIMENTAL_BIN_PATH = OPEN3D_BUILD_PATH + "bin/Experimental/Release/" # Windows
+# OPEN3D_EXPERIMENTAL_BIN_PATH = OPEN3D_BUILD_PATH + "bin/Experimental/" # Mac/Ubuntu
 
-# STEP 5) specify path to where
-# Open3D's experimental applications (ViewDistances and ConvertPointCloud)
-# for example, use one of these
-OPEN3D_BIN_PATH = OPEN3D_BUILD_PATH + 'bin/Release/' # Windows
-# OPEN3D_EXPERIMENTAL_BIN_PATH = OPEN3D_BUILD_PATH + 'bin/' # Mac
-# OPEN3D_EXPERIMENTAL_BIN_PATH = OPEN3D_BUILD_PATH + 'bin/' # Ubuntu
+# STEP 5) Set the names for your reconstruction log and reconstruction files
+# For example,
+MY_LOG_POSTFIX = '_COLMAP_SfM.log'
+MY_RECONSTRUCTION_POSTFIX = '_COLMAP.ply'
+# You will need to place
+# Barn_COLMAP_SfM.log and Barn_COLMAP.ply in BASE_DIR/Barn
 
 # some global parameters - do not modify
-dTau_dict = {
+scenes_tau_dict = {
 	"Barn":0.01,
 	"Caterpillar":0.005,
 	"Church":0.025,
@@ -84,21 +81,12 @@ dTau_dict = {
 	"Meetingroom":0.01,
 	"Truck":0.005}
 
-scenes = [
-	"Barn",
-	"Caterpillar",
-	"Church",
-	"Courthouse",
-	"Ignatius",
-	"Meetingroom",
-	"Truck"]
-
 if OPEN3D_BUILD_PATH is None:
-	raise SystemExit('Error:: please set [OPEN3D_BUILD_PATH] in setup.py')
+	raise SystemExit("Error:: please set [OPEN3D_BUILD_PATH] in setup.py")
 if OPEN3D_PYTHON_LIBRARY_PATH is None:
-	raise SystemExit('Error:: please set [OPEN3D_PYTHON_LIBRARY_PATH] in setup.py')
+	raise SystemExit("Error:: please set [OPEN3D_PYTHON_LIBRARY_PATH] in setup.py")
 if OPEN3D_EXPERIMENTAL_BIN_PATH is None:
-	raise SystemExit('Error:: please set [OPEN3D_EXPERIMENTAL_BIN_PATH] in setup.py')
+	raise SystemExit("Error:: please set [OPEN3D_EXPERIMENTAL_BIN_PATH] in setup.py")
 
 import sys
 sys.path.append(OPEN3D_PYTHON_LIBRARY_PATH)
