@@ -43,6 +43,8 @@
 # DATASET_DIR = "C:/data/TanksAndTemples/evaluation/" # windows
 # DATASET_DIR = "/Users/[user_id]/data/TanksAndTemples/evaluation/" # Mac
 # DATASET_DIR = "/home/[user_id]/data/TanksAndTemples/evaluation/" # Ubuntu
+# Example for TanksAndTemples trainning dataset can be download from
+# https://drive.google.com/open?id=1VDHEqGAuLyGa7Bv3lGOr1KX2RhPbHLxw
 DATASET_DIR = None
 
 # STEP 1) this evaluation script require Open3D python binding
