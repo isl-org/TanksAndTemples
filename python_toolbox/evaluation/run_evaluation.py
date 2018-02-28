@@ -33,8 +33,8 @@
 # The dataset has a different license, please refer to
 # https://tanksandtemples.org/license/
 
-# this evaluation script uses Open3D python binding
-# please read intructions in setup.py before run this script.
+# this script requires Open3D python binding
+# please follow the intructions in setup.py before running this script.
 import numpy as np
 
 from setup import *
@@ -52,16 +52,15 @@ def run_evaluation():
 		dTau = scenes_tau_dict[scene]
 		# put the crop-file, the GT file, the COLMAP SfM log file and
 		# the alignment of the according scene in a folder of
-		# the same scene name in the BASE_DIR
-		BASE_DIR = "C:/git/TanksAndTemples/evaluation/data/"
-		mvs_outpath = BASE_DIR + scene + '/evaluation/'
+		# the same scene name in the DATASET_DIR
+		mvs_outpath = DATASET_DIR + scene + '/evaluation/'
 		make_dir(mvs_outpath)
 
-		sfm_dirname = BASE_DIR + scene + "/"
+		sfm_dirname = DATASET_DIR + scene + "/"
 		colmap_ref_logfile = sfm_dirname + scene + '_COLMAP_SfM.log'
 		alignment = sfm_dirname + scene + '_trans.txt'
-		gt_filen = BASE_DIR + scene + '/' + scene + '.ply'
-		cropfile = BASE_DIR + scene + '/' + scene + '.json'
+		gt_filen = DATASET_DIR + scene + '/' + scene + '.ply'
+		cropfile = DATASET_DIR + scene + '/' + scene + '.json'
 
 		###############################################################
 		# User input files:
@@ -70,7 +69,7 @@ def run_evaluation():
 		# should work with any other method as well
 		###############################################################
 		new_logfile = sfm_dirname + scene + MY_LOG_POSTFIX
-		mvs_file = BASE_DIR + scene + '/' + scene + MY_RECONSTRUCTION_POSTFIX
+		mvs_file = DATASET_DIR + scene + '/' + scene + MY_RECONSTRUCTION_POSTFIX
 
 		#Load reconstruction and according GT
 		print(mvs_file)
