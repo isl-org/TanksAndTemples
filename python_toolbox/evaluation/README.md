@@ -70,9 +70,12 @@ f-score : 0.4726
 and so on for other datasets.
 
 **Step 5**. Check the evaluation folders. For example, ``TanksAndTemples/evaluation/data/Barn/evaluation/`` will have following outputs.
+
 ![F-score](images/f-score.jpg)
 PR_Barn_@d_th_0_0100.pdf (F-score curve)
+
 ![Precision](images/precision.jpg)
 Barn.precision.ply (Precision. Color coded by jet colormap)
+
 ![Recall](images/recall.jpg)
 Barn.recall.ply (Recall. Color coded by jet colormap)
