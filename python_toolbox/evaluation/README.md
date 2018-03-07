@@ -71,11 +71,11 @@ and so on for other datasets.
 
 **Step 5**. Check the evaluation folders. For example, ``TanksAndTemples/evaluation/data/Barn/evaluation/`` will have following outputs.
 
+``PR_Barn_@d_th_0_0100.pdf`` (F-score curve)
 ![F-score](images/f-score.jpg)
-PR_Barn_@d_th_0_0100.pdf (F-score curve)
 
+``Barn.precision.ply`` (Precision. Color coded by jet colormap)
 ![Precision](images/precision.jpg)
-Barn.precision.ply (Precision. Color coded by jet colormap)
 
+``Barn.recall.ply`` (Recall. Color coded by jet colormap)
 ![Recall](images/recall.jpg)
-Barn.recall.ply (Recall. Color coded by jet colormap)
