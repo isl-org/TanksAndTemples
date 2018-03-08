@@ -22,63 +22,58 @@ python run.py
 This will show like below:
 ```
 ===========================
-Evaluating Barn
+Evaluating Ignatius
 ===========================
-TanksAndTemples/evaluation/data/Barn/Barn_COLMAP.ply
+C:/git/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP.ply
 Reading PLY: [========================================] 100%
-TanksAndTemples/evaluation/data/Barn/Barn.ply
+Read PointCloud: 6929586 vertices.
+C:/git/TanksAndTemples/evaluation/data/Ignatius/Ignatius.ply
 Reading PLY: [========================================] 100%
 :
-Cropping geometry: [========================================] 100%
-Pointcloud down sampled from 11165399 points to 6680529 points.
-Pointcloud down sampled from 6680529 points to 4568550 points.
-Cropping geometry: [========================================] 100%
-Pointcloud down sampled from 12746387 points to 11729295 points.
-Pointcloud down sampled from 11729295 points to 4397843 points.
-ICP Iteration #0: Fitness 0.9980, RMSE 0.0333
-ICP Iteration #1: Fitness 0.9980, RMSE 0.0332
-ICP Iteration #2: Fitness 0.9979, RMSE 0.0332
-[Registration] threshold: 0.150000
-:
+ICP Iteration #0: Fitness 0.9980, RMSE 0.0044
+ICP Iteration #1: Fitness 0.9980, RMSE 0.0043
+ICP Iteration #2: Fitness 0.9980, RMSE 0.0043
+ICP Iteration #3: Fitness 0.9980, RMSE 0.0043
+ICP Iteration #4: Fitness 0.9980, RMSE 0.0042
+ICP Iteration #5: Fitness 0.9980, RMSE 0.0042
+ICP Iteration #6: Fitness 0.9979, RMSE 0.0042
+ICP Iteration #7: Fitness 0.9979, RMSE 0.0042
+ICP Iteration #8: Fitness 0.9979, RMSE 0.0042
+ICP Iteration #9: Fitness 0.9979, RMSE 0.0042
+ICP Iteration #10: Fitness 0.9979, RMSE 0.0042
 [EvaluateHisto]
 Cropping geometry: [========================================] 100%
-Pointcloud down sampled from 11165399 points to 6680305 points.
-Pointcloud down sampled from 6680305 points to 6238213 points.
-C:/git/TanksAndTemples/evaluation/data/Barn/evaluation//Barn.precision.ply
+Pointcloud down sampled from 6929586 points to 1449840 points.
+Pointcloud down sampled from 1449840 points to 1365628 points.
+C:/git/TanksAndTemples/evaluation/data/Ignatius/evaluation//Ignatius.precision.ply
 Cropping geometry: [========================================] 100%
-Pointcloud down sampled from 12746387 points to 11729295 points.
-Pointcloud down sampled from 11729295 points to 10532960 points.
+Pointcloud down sampled from 5016769 points to 4957123 points.
+Pointcloud down sampled from 4957123 points to 4181506 points.
 [compute_point_cloud_to_point_cloud_distance]
 [compute_point_cloud_to_point_cloud_distance]
 :
 [ViewDistances] Add color coding to visualize error
-Reading PLY: [========================================] 100%
-Writing PLY: [========================================] 100%
 [ViewDistances] Add color coding to visualize error
-Reading PLY: [========================================] 100%
-Writing PLY: [========================================] 100%
+:
 [get_f1_score_histo2]
 ==============================
-evaluation result : Barn
+evaluation result : Ignatius
 ==============================
-distance tau : 0.010
-precision : 0.4244
-recall : 0.5332
-f-score : 0.4726
+distance tau : 0.003
+precision : 0.7679
+recall : 0.7937
+f-score : 0.7806
 ==============================
 ```
 and so on for other datasets.
 
-**Step 5**. Check the evaluation folders. For example, ``TanksAndTemples/evaluation/data/Barn/evaluation/`` will have following outputs.
+**Step 5**. Check the evaluation folders. For example, ``TanksAndTemples/evaluation/data/Ignatius/evaluation/`` will have following outputs.
 
 <img src="images/f-score.jpg" width="400">
 
-``PR_Barn_@d_th_0_0100.pdf`` (F-score curve)
+``PR_Ignatius_@d_th_0_0030.pdf`` (F-score curve)
 
-<img src="images/precision.jpg" width="400">
-
-``Barn.precision.ply`` (Precision. Color coded by jet colormap)
-
-<img src="images/recall.jpg" width="400">
-
-``Barn.recall.ply`` (Recall. Color coded by jet colormap)
+| <img src="images/precision.jpg" width="200"> | <img src="images/recall.jpg" width="200"> |
+|--|--|
+| ``Ignatius.precision.ply``  | ``Ignatius.recall.ply`` |
+(Color coded by jet colormap)
