@@ -77,4 +77,4 @@ and so on for other datasets.
 |--|--|
 | ``Ignatius.precision.ply``  | ``Ignatius.recall.ply`` |
 
-(Color coded by jet colormap)
+(3D visualization of precision and recall. Color coded by jet colormap)
