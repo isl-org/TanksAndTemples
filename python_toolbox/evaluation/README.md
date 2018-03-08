@@ -71,9 +71,10 @@ and so on for other datasets.
 
 <img src="images/f-score.jpg" width="400">
 
-``PR_Ignatius_@d_th_0_0030.pdf`` (F-score curve)
+``PR_Ignatius_@d_th_0_0030.pdf`` (Precision and recall curve with F-score)
 
 | <img src="images/precision.jpg" width="200"> | <img src="images/recall.jpg" width="200"> |
 |--|--|
 | ``Ignatius.precision.ply``  | ``Ignatius.recall.ply`` |
+
 (Color coded by jet colormap)
