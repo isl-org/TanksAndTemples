@@ -65,7 +65,7 @@ DATASET_DIR = None
 OPEN3D_BUILD_PATH = None
 
 # STEP 3) specify path to where
-# py3d.so, py3d_[python_version].so or py3d.lib is located
+# open3d.so, open3d_[python_version].so or open3d.lib is located
 # For example, use one of these:
 # OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + "lib/Release/" # Windows
 # OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + "lib/" # Mac/Ubuntu
@@ -115,6 +115,6 @@ if MY_RECONSTRUCTION_POSTFIX is None:
 import sys
 sys.path.append(OPEN3D_PYTHON_LIBRARY_PATH)
 try:
-    from py3d import *
+    from open3d import *
 except:
     raise SystemExit("Error:: please correctly set paths for Open3D in setup.py")
