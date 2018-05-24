@@ -38,48 +38,47 @@ colmap_folder=$1/
 iname=$2/
 outf=$3/
 
-DATABASE=sample_reconstruction.db
+DATABASE=${outf}sample_reconstruction.db
 
 PROJECT_PATH=${outf}
 mkdir -p ${PROJECT_PATH}
+mkdir -p ${PROJECT_PATH}/images
 
-cp -n ${iname}*.jpg ${PROJECT_PATH}
+cp -n ${iname}*.jpg ${PROJECT_PATH}/images
 
-${colmap_folder}/feature_extractor \
+${colmap_folder}/colmap feature_extractor \
     --database_path ${DATABASE} \
-    --image_path ${PROJECT_PATH} \
+    --image_path ${PROJECT_PATH}/images \
 	--ImageReader.camera_model RADIAL \
-	--ImageReader.single_camera 1 \
-	--use_gpu 0
+	--ImageReader.single_camera 0 \
+	--SiftExtraction.use_gpu 1
 	
-${colmap_folder}/exhaustive_matcher \
+${colmap_folder}/colmap exhaustive_matcher \
     --database_path ${DATABASE} \
     --SiftMatching.use_gpu 1 
     
 mkdir ${PROJECT_PATH}/sparse
 
-${colmap_folder}/mapper \
+${colmap_folder}/colmap mapper \
     --database_path ${DATABASE} \
-    --image_path ${PROJECT_PATH} \
+    --image_path ${PROJECT_PATH}/images \
     --export_path ${PROJECT_PATH}/sparse
 
 mkdir ${PROJECT_PATH}/dense
 
-${colmap_folder}/image_undistorter \
-    --image_path ${PROJECT_PATH} \
+${colmap_folder}/colmap image_undistorter \
+    --image_path ${PROJECT_PATH}/images \
     --input_path ${PROJECT_PATH}/sparse/0/ \
     --output_path ${PROJECT_PATH}/dense \
     --output_type COLMAP --max_image_size 1500
 
-${colmap_folder}/dense_stereo \
+${colmap_folder}/colmap dense_stereo \
     --workspace_path $PROJECT_PATH/dense \
     --workspace_format COLMAP \
     --DenseStereo.geom_consistency true
 
-${colmap_folder}/dense_fuser \
+${colmap_folder}/colmap dense_fuser \
     --workspace_path $PROJECT_PATH/dense \
     --workspace_format COLMAP \
     --input_type geometric \
     --output_path $PROJECT_PATH/dense/fused.ply
-
-
