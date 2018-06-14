@@ -9,7 +9,7 @@ The raw videos of the training dataset can be found from:
 https://tanksandtemples.org/download/
 
 **Step 1**. Download evaluation data (ground truth geometry + reference reconstruction) using
-[this link](https://drive.google.com/open?id=1VDHEqGAuLyGa7Bv3lGOr1KX2RhPbHLxw). In this example, we regard ``TanksAndTemples/evaluation/data/`` as a dataset folder.
+[this link](https://drive.google.com/open?id=1UoKPiUUsKa0AVHFOrnMRhc5hFngjkE-t). In this example, we regard ``TanksAndTemples/evaluation/data/`` as a dataset folder.
 
 **Step 2**. Install Open3D. Follow instructions in http://open3d.org/docs/getting_started.html
 
