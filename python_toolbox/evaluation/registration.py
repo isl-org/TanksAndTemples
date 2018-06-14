@@ -40,28 +40,45 @@ import numpy as np
 
 MAX_POINT_NUMBER = 4e6
 
+def read_mapping(filename):
+	mapping = []
+	with open(filename, 'r') as f:
+		n_sampled_frames = int(f.readline())
+		n_total_frames = int(f.readline())
+		mapping = np.zeros(shape = (n_sampled_frames, 2))
+		metastr = f.readline()
+		for iter in range(n_sampled_frames):
+			metadata = list(map(int, metastr.split()))
+			mapping[iter, :] = metadata
+			metastr = f.readline()
+	return [n_sampled_frames, n_total_frames, mapping]
 
-def trajectory_alignment(traj_to_register, gt_traj_col, gt_trans):
+def gen_sparse_trajectory(mapping, f_trajectory):			
+	sparse_traj = []
+	for m in mapping:
+		sparse_traj.append(f_trajectory[int(m[1]-1)])
+	return sparse_traj
+
+
+def trajectory_alignment(traj_to_register, gt_traj_col, gt_trans, scene):
 	traj_pcd_col = convert_trajectory_to_pointcloud(gt_traj_col)
 	traj_pcd_col.transform(gt_trans)
-
 	corres = Vector2iVector(np.asarray(
 			list(map(lambda x: [x, x], range(len(gt_traj_col))))))
-
 	rr=RANSACConvergenceCriteria()
 	rr.max_iteration = 100000
 	rr.max_validation = 100000
+	map_file = DATASET_DIR + scene + '/' + scene + '_mapping_reference.txt'
 
 	# in this case a log file was used which contains
 	# every movie frame (see tutorial for details)
 	if len(traj_to_register) > 1600:
+		n_sampled_frames, n_total_frames, mapping = read_mapping(map_file)
 		traj_col2 = gen_sparse_trajectory(mapping, traj_to_register)
 		traj_to_register_pcd = convert_trajectory_to_pointcloud(traj_col2)
 	else:
 		traj_to_register_pcd = convert_trajectory_to_pointcloud(
 				traj_to_register)
-
-	#randomvar = 0.05 # 5% error added
 	randomvar = 0.0
 	nr_of_cam_pos = len(traj_to_register_pcd.points)
 	rand_number_added = np.asanyarray(traj_to_register_pcd.points) * \
@@ -99,7 +116,6 @@ def registration_unif(source, gt_target, init_trans,
 	if verbose:
 		print("[Registration] threshold: %f" % threshold)
 		set_verbosity_level(VerbosityLevel.Debug)
-
 	s = crop_and_downsample(source, crop_volume,
 			down_sample_method='uniform', trans=init_trans)
 	t = crop_and_downsample(gt_target, crop_volume,
@@ -119,9 +135,9 @@ def registration_vol_ds(source, gt_target, init_trans,
 				% (voxel_size, threshold))
 		set_verbosity_level(VerbosityLevel.Debug)
 	s = crop_and_downsample(source, crop_volume,
-			down_sample_method='voxel', trans=init_trans)
+			down_sample_method='voxel', voxel_size=voxel_size, trans=init_trans)
 	t = crop_and_downsample(gt_target, crop_volume,
-			down_sample_method='voxel')
+			down_sample_method='voxel', voxel_size=voxel_size)
 	reg = registration_icp(s, t, threshold, np.identity(4),
 			TransformationEstimationPointToPoint(True),
 			ICPConvergenceCriteria(1e-6, max_itr))

@@ -82,7 +82,7 @@ def run_evaluation():
 		gt_traj_col = read_trajectory(colmap_ref_logfile)
 
 		trajectory_transform = trajectory_alignment(
-				traj_to_register, gt_traj_col, gt_trans)
+				traj_to_register, gt_traj_col, gt_trans, scene)
 
 		# Refine alignment by using the actual GT and MVS pointclouds
 		vol = read_selection_polygon_volume(cropfile)
@@ -91,11 +91,11 @@ def run_evaluation():
 
 		# Registration refinment in 3 iterations
 		r2  = registration_vol_ds(pcd, gt_pcd,
-				trajectory_transform, vol, 3*dTau, dTau*120, 20)
+				trajectory_transform, vol, dTau, dTau*80, 20)
 		r3  = registration_vol_ds(pcd, gt_pcd,
-				r2.transformation, vol, 2*dTau, dTau*30, 20)
+				r2.transformation, vol, dTau/2.0, dTau*20, 20)
 		r  = registration_unif(pcd, gt_pcd,
-				r3.transformation, vol, dTau*15, 20)
+				r3.transformation, vol, 2*dTau, 20)
 
 		# Histogramms and P/R/F1
 		plot_stretch = 5
