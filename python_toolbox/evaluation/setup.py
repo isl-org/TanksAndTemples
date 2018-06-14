@@ -51,7 +51,7 @@
 #  - Ignatius_COLMAP_SfM.log	# Reference camera pose obtained by successful reconstruction algorithm
 #  - Ignatius_trans.txt			# Transformation matrix that aligns reference pose with ground truth
 # TanksAndTemples trainning dataset with this folder structure can be download from
-# https://drive.google.com/open?id=1VDHEqGAuLyGa7Bv3lGOr1KX2RhPbHLxw
+# https://drive.google.com/open?id=1UoKPiUUsKa0AVHFOrnMRhc5hFngjkE-t
 DATASET_DIR = None
 
 # STEP 1) this evaluation script require Open3D python binding
@@ -84,8 +84,15 @@ OPEN3D_EXPERIMENTAL_BIN_PATH = OPEN3D_BUILD_PATH + None
 # MY_RECONSTRUCTION_POSTFIX = "_your_reconstruction.ply"
 # and place _your_camera_poses.log and _your_reconstruction.ply in DATASET_DIR/Ignatius.
 # Do the same thing for other scenes.
+# If you are using the training datased downloaded from our tanksandtemples.org 
+# website (https://drive.google.com/open?id=1UoKPiUUsKa0AVHFOrnMRhc5hFngjkE-t)
+# use the following POSTFIXES:
+# MY_LOG_POSTFIX = "_COLMAP_SfM.log"
+# MY_RECONSTRUCTION_POSTFIX = "_COLMAP.ply"
 MY_LOG_POSTFIX = None
 MY_RECONSTRUCTION_POSTFIX = None
+
+
 
 # ----------------------------------------------------------------------------
 # END OF INSTRUCTION
