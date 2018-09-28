@@ -68,7 +68,7 @@ OPEN3D_BUILD_PATH = None
 # open3d.so, open3d_[python_version].so or open3d.lib is located
 # For example, use one of these:
 # OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + "lib/Release/" # Windows
-# OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + "lib/" # Mac/Ubuntu
+# OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + "lib/Python/" # Mac/Ubuntu
 OPEN3D_PYTHON_LIBRARY_PATH = OPEN3D_BUILD_PATH + None
 
 # STEP 4) specify path to where
