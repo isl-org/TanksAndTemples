@@ -50,7 +50,7 @@ ${colmap_folder}/colmap feature_extractor \
     --database_path ${DATABASE} \
     --image_path ${PROJECT_PATH}/images \
 	--ImageReader.camera_model RADIAL \
-	--ImageReader.single_camera 0 \
+	--ImageReader.single_camera 1 \
 	--SiftExtraction.use_gpu 1
 	
 ${colmap_folder}/colmap exhaustive_matcher \
@@ -58,11 +58,10 @@ ${colmap_folder}/colmap exhaustive_matcher \
     --SiftMatching.use_gpu 1 
     
 mkdir ${PROJECT_PATH}/sparse
-
 ${colmap_folder}/colmap mapper \
     --database_path ${DATABASE} \
     --image_path ${PROJECT_PATH}/images \
-    --export_path ${PROJECT_PATH}/sparse
+    --output_path ${PROJECT_PATH}/sparse
 
 mkdir ${PROJECT_PATH}/dense
 
@@ -72,12 +71,12 @@ ${colmap_folder}/colmap image_undistorter \
     --output_path ${PROJECT_PATH}/dense \
     --output_type COLMAP --max_image_size 1500
 
-${colmap_folder}/colmap dense_stereo \
+${colmap_folder}/colmap patch_match_stereo \
     --workspace_path $PROJECT_PATH/dense \
     --workspace_format COLMAP \
-    --DenseStereo.geom_consistency true
+    --PatchMatchStereo.geom_consistency true
 
-${colmap_folder}/colmap dense_fuser \
+${colmap_folder}/colmap stereo_fusion \
     --workspace_path $PROJECT_PATH/dense \
     --workspace_format COLMAP \
     --input_type geometric \
