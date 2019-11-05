@@ -54,6 +54,8 @@ id_download_dict = {'Auditorium.mp4': '0B-ePgl6HF260SmdGUzJSX0ZfZXc',
  'Barn.zip': '0B-ePgl6HF260NzQySklGdXZyQzA',
  'Church.mp4': '0B-ePgl6HF260dnlGMkFkNlpibG8',
  'Church.zip': '0B-ePgl6HF260SmhXM0czaHJ3SU0',
+ 'Caterpillar.mp4': '0B-ePgl6HF260Z00xVWgyN2c3WEU',
+ 'Caterpillar.zip': '0B-ePgl6HF260b2JNbnZYYjczU2s',
  'Courthouse.mp4': '0B-ePgl6HF260TEpnajBqRFJ1enM',
  'Courthouse.zip': '0B-ePgl6HF260bHRNZTJnU1pWMVE',
  'Courtroom.mp4': '0B-ePgl6HF260b0JZeUJlUThSWjQ',
@@ -87,6 +89,8 @@ id_download_dict = {'Auditorium.mp4': '0B-ePgl6HF260SmdGUzJSX0ZfZXc',
  'Temple.zip': '0B-ePgl6HF260V2VaSG5GTkl5dmc',
  'Train.mp4': '0B-ePgl6HF260YUttRUI4U0xtS1E',
  'Train.zip': '0B-ePgl6HF260UFNWeXk3MHhCT00',
+ 'Truck.mp4': '0B-ePgl6HF260aVVZMzhSdVc5Njg',
+ 'Truck.zip': '0B-ePgl6HF260NEw3OGN4ckF0dnM',
  'advanced_video.chk': '0B-ePgl6HF260RWJIcjRPRnlUS28',
  'advanced_video.zip': '0B-ePgl6HF260OXgzbEJleDVSZ0k',
  'image_sets_md5.chk': '0B-ePgl6HF260dE5zR3FhQmxVbHc',
@@ -99,15 +103,16 @@ id_download_dict = {'Auditorium.mp4': '0B-ePgl6HF260SmdGUzJSX0ZfZXc',
  'md5.txt': '0B-ePgl6HF260QTlJUXpqc3RQOGM',
  'training.zip': '0B-ePgl6HF260dU1pejdkeXdMb00',
  'video_set_md5.chk': '0B-ePgl6HF260M2h5Q3o1bGdpc1U'}
-  
+
+
 sep = os.sep
 parser = argparse.ArgumentParser(description='Tanks and Temples file' +
 	'downloader')
 parser.add_argument('--modality', type=str, help='(image|video|both) ' + 
 	'choose if you want to download video sequences (very big) or pre sampled' +
 	' image sets', default='image')
-parser.add_argument('--group', type=str, help='(intermediate|advanced|both)' + 
-	' choose if you want to download intermediate or advanced dataset',
+parser.add_argument('--group', type=str, help='(intermediate|advanced|both|training|all)' +
+	' choose if you want to download intermediate, advanced or training dataset',
 	default='both')
 parser.add_argument('--pathname', type=str, help=
 	'chose destination path name, default = local path', default='')
@@ -257,13 +262,13 @@ def check_image_sets(pathname, scene, image_md5_dict):
 
 
 def print_status(sequences, modality, pathname, intermediate_list,
- advanced_list, image_md5_dict, video_md5_dict):
+ advanced_list, training_list, image_md5_dict, video_md5_dict):
 	#print('intermediate Dataset \t\t\t Video \t\t\t image set')
 	print('\n\n data status: \n\n')
 	print('[X] - downloaded    [ ] - missing    [?] - being downloaded or '+
 	'corrupted    [n] - not checked')
 
-	if (sequences == 'intermediate' or sequences == 'both' or sequences == ''):
+	if (sequences == 'intermediate' or sequences == 'both' or sequences == 'all' or sequences == ''):
 		print('\n\n---------------------------------------------------------'+
 		'--------')
 		line_new = '%12s  %12s  %12s' % (' intermediate Dataset', 'Video',
@@ -279,7 +284,7 @@ def print_status(sequences, modality, pathname, intermediate_list,
 			    modality == '') else 'n')
 			print(line_new)
 
-	if (sequences == 'advanced' or sequences == 'both' or sequences == ''):
+	if (sequences == 'advanced' or sequences == 'both' or sequences == 'all' or sequences == ''):
 		print('\n\n------------------------------------------------------'+
 		'---------')
 		line_new = '%12s  %16s  %12s' % (' advanced Dataset', 'Video',
@@ -295,12 +300,31 @@ def print_status(sequences, modality, pathname, intermediate_list,
 			    modality == '') else 'n')
 			print(line_new)
 
+	if (sequences == 'training' or sequences == 'all' or sequences == ''):
+		print('\n\n------------------------------------------------------'+
+		'---------')
+		line_new = '%12s  %16s  %12s' % (' training Dataset', 'Video',
+		 'image set')
+		print(line_new)
+		print('---------------------------------------------------------------')
+		for scene in training_list:
+			#print(scene + '\t\t\t X \t\t\t X')
+			line_new = '%12s  %19s  %10s' % (scene, check_video(pathname, scene,
+			 video_md5_dict) if (modality == 'video' or modality == 'both' or
+			  modality == '') else 'n', check_image_sets(pathname, scene,
+			   image_md5_dict) if (modality == 'image' or modality == 'both' or
+			    modality == '') else 'n')
+			print(line_new)
+
+
 
 if __name__ == "__main__":
 	intermediate_list = ['Family','Francis','Horse','Lighthouse','M60',
 	'Panther','Playground','Train']
 	advanced_list = ['Auditorium','Ballroom','Courtroom','Museum','Palace',
 	'Temple']
+	training_list = ['Barn','Caterpillar','Church','Courthouse','Ignatius',
+	'Meetingroom', 'Truck']
 
 	args = parser.parse_args()
 	sequences = args.group
@@ -310,8 +334,12 @@ if __name__ == "__main__":
 		scene_list = intermediate_list
 	elif sequences == 'advanced':
 		scene_list = advanced_list
+	elif sequences == 'training':
+		scene_list = training_list
 	elif sequences == 'both':
 		scene_list = intermediate_list + advanced_list
+	elif sequences == 'all':
+		scene_list = intermediate_list + advanced_list + training_list
 	elif sequences == '':
 		scene_list = intermediate_list + advanced_list
 	else:
@@ -357,14 +385,14 @@ if __name__ == "__main__":
 		scene_name = line.split(' ')[-1][0:-4]
 		video_md5_dict.update({scene_name:md5})
 	if (len(sys.argv)==1):
-		print_status('both', 'both', pathname, intermediate_list, advanced_list,
+		print_status('both', 'both', pathname, intermediate_list, advanced_list, training_list,
 		 image_md5_dict, video_md5_dict)
 	elif status_print and (len(sys.argv)==2):
-		print_status('both', 'both', pathname, intermediate_list, advanced_list,
+		print_status('both', 'both', pathname, intermediate_list, advanced_list, training_list,
 		 image_md5_dict, video_md5_dict)
 	elif status_print:
-		print_status(sequences, modality, pathname, intermediate_list,
-		 advanced_list, image_md5_dict, video_md5_dict)
+		print_status(sequences, modality, pathname, intermediate_list, advanced_list, training_list,
+		 image_md5_dict, video_md5_dict)
 	elif sequences or modality:
 		for scene in scene_list:
 			if modality == 'video':
