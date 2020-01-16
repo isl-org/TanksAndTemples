@@ -36,86 +36,155 @@
 # this script requires Open3D python binding
 # please follow the intructions in setup.py before running this script.
 import numpy as np
+import open3d as o3d
+import os
+import argparse
 
-from setup import *
-from registration import *
-from evaluation import *
-from util import *
-from plot import *
+from config import scenes_tau_dict
+from registration import (
+    trajectory_alignment,
+    registration_vol_ds,
+    registration_unif,
+    read_trajectory,
+)
+from evaluation import EvaluateHisto
+from util import make_dir
+from plot import plot_graph
 
-def run_evaluation():
-	for scene in scenes_tau_dict:
-		print("")
-		print("===========================")
-		print("Evaluating %s" % scene)
-		print("===========================")
 
-		dTau = scenes_tau_dict[scene]
-		# put the crop-file, the GT file, the COLMAP SfM log file and
-		# the alignment of the according scene in a folder of
-		# the same scene name in the DATASET_DIR
-		sfm_dirname = DATASET_DIR + scene + "/"
-		colmap_ref_logfile = sfm_dirname + scene + '_COLMAP_SfM.log'
-		alignment = sfm_dirname + scene + '_trans.txt'
-		gt_filen = DATASET_DIR + scene + '/' + scene + '.ply'
-		cropfile = DATASET_DIR + scene + '/' + scene + '.json'
-		mvs_outpath = DATASET_DIR + scene + '/evaluation/'
-		make_dir(mvs_outpath)
+def run_evaluation(dataset_dir, traj_path, ply_path, out_dir):
+    scene = os.path.basename(os.path.normpath(dataset_dir))
 
-		###############################################################
-		# User input files:
-		# SfM log file and pointcoud of your reconstruction comes here.
-		# as an example the COLMAP data will be used, but the script
-		# should work with any other method as well
-		###############################################################
-		new_logfile = sfm_dirname + scene + MY_LOG_POSTFIX
-		mvs_file = DATASET_DIR + scene + '/' + scene + MY_RECONSTRUCTION_POSTFIX
+    if scene not in scenes_tau_dict:
+        print(dataset_dir, scene)
+        raise Exception("invalid dataset-dir, not in scenes_tau_dict")
 
-		#Load reconstruction and according GT
-		print(mvs_file)
-		pcd = read_point_cloud(mvs_file)
-		print(gt_filen)
-		gt_pcd = read_point_cloud(gt_filen)
+    print("")
+    print("===========================")
+    print("Evaluating %s" % scene)
+    print("===========================")
 
-		gt_trans = np.loadtxt(alignment)
-		traj_to_register = read_trajectory(new_logfile)
-		gt_traj_col = read_trajectory(colmap_ref_logfile)
+    dTau = scenes_tau_dict[scene]
+    # put the crop-file, the GT file, the COLMAP SfM log file and
+    # the alignment of the according scene in a folder of
+    # the same scene name in the dataset_dir
+    colmap_ref_logfile = os.path.join(dataset_dir, scene + "_COLMAP_SfM.log")
+    alignment = os.path.join(dataset_dir, scene + "_trans.txt")
+    gt_filen = os.path.join(dataset_dir, scene + ".ply")
+    cropfile = os.path.join(dataset_dir, scene + ".json")
+    map_file = os.path.join(dataset_dir, scene + "_mapping_reference.txt")
 
-		trajectory_transform = trajectory_alignment(
-				traj_to_register, gt_traj_col, gt_trans, scene)
+    make_dir(out_dir)
 
-		# Refine alignment by using the actual GT and MVS pointclouds
-		vol = read_selection_polygon_volume(cropfile)
-		# big pointclouds will be downlsampled to this number to speed up alignment
-		dist_threshold = dTau
+    # Load reconstruction and according GT
+    print(ply_path)
+    pcd = o3d.io.read_point_cloud(ply_path)
+    print(gt_filen)
+    gt_pcd = o3d.io.read_point_cloud(gt_filen)
 
-		# Registration refinment in 3 iterations
-		r2  = registration_vol_ds(pcd, gt_pcd,
-				trajectory_transform, vol, dTau, dTau*80, 20)
-		r3  = registration_vol_ds(pcd, gt_pcd,
-				r2.transformation, vol, dTau/2.0, dTau*20, 20)
-		r  = registration_unif(pcd, gt_pcd,
-				r3.transformation, vol, 2*dTau, 20)
+    gt_trans = np.loadtxt(alignment)
+    traj_to_register = read_trajectory(traj_path)
+    gt_traj_col = read_trajectory(colmap_ref_logfile)
 
-		# Histogramms and P/R/F1
-		plot_stretch = 5
-		[precision, recall, fscore, edges_source, cum_source,
-				edges_target, cum_target] = EvaluateHisto(
-				pcd, gt_pcd, r.transformation, vol, dTau/2.0, dTau,
-				mvs_outpath, plot_stretch, scene)
-		eva = [precision, recall, fscore]
-		print("==============================")
-		print("evaluation result : %s" % scene)
-		print("==============================")
-		print("distance tau : %.3f" % dTau)
-		print("precision : %.4f" % eva[0])
-		print("recall : %.4f" % eva[1])
-		print("f-score : %.4f" % eva[2])
-		print("==============================")
+    trajectory_transform = trajectory_alignment(
+        map_file, traj_to_register, gt_traj_col, gt_trans, scene
+    )
 
-		# Plotting
-		plot_graph(scene, fscore, dist_threshold, edges_source, cum_source,
-				edges_target, cum_target, plot_stretch, mvs_outpath)
+    # Refine alignment by using the actual GT and MVS pointclouds
+    vol = o3d.visualization.read_selection_polygon_volume(cropfile)
+    # big pointclouds will be downlsampled to this number to speed up alignment
+    dist_threshold = dTau
+
+    # Registration refinment in 3 iterations
+    r2 = registration_vol_ds(
+        pcd, gt_pcd, trajectory_transform, vol, dTau, dTau * 80, 20
+    )
+    r3 = registration_vol_ds(
+        pcd, gt_pcd, r2.transformation, vol, dTau / 2.0, dTau * 20, 20
+    )
+    r = registration_unif(pcd, gt_pcd, r3.transformation, vol, 2 * dTau, 20)
+
+    # Histogramms and P/R/F1
+    plot_stretch = 5
+    [
+        precision,
+        recall,
+        fscore,
+        edges_source,
+        cum_source,
+        edges_target,
+        cum_target,
+    ] = EvaluateHisto(
+        pcd,
+        gt_pcd,
+        r.transformation,
+        vol,
+        dTau / 2.0,
+        dTau,
+        out_dir,
+        plot_stretch,
+        scene,
+    )
+    eva = [precision, recall, fscore]
+    print("==============================")
+    print("evaluation result : %s" % scene)
+    print("==============================")
+    print("distance tau : %.3f" % dTau)
+    print("precision : %.4f" % eva[0])
+    print("recall : %.4f" % eva[1])
+    print("f-score : %.4f" % eva[2])
+    print("==============================")
+
+    # Plotting
+    plot_graph(
+        scene,
+        fscore,
+        dist_threshold,
+        edges_source,
+        cum_source,
+        edges_target,
+        cum_target,
+        plot_stretch,
+        out_dir,
+    )
+
 
 if __name__ == "__main__":
-	run_evaluation()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dataset-dir",
+        type=str,
+        required=True,
+        help="path to a dataset/scene directory containing X.json, X.ply, ...",
+    )
+    parser.add_argument(
+        "--traj-path",
+        type=str,
+        required=True,
+        help="path to trajectory file. See `convert_to_logfile.py` to create this file.",
+    )
+    parser.add_argument(
+        "--ply-path",
+        type=str,
+        required=True,
+        help="path to reconstruction ply file",
+    )
+    parser.add_argument(
+        "--out-dir",
+        type=str,
+        default="",
+        help="output directory, default: an evaluation directory is created in the directory of the ply file",
+    )
+    args = parser.parse_args()
+
+    if args.out_dir.strip() == "":
+        args.out_dir = os.path.join(
+            os.path.dirname(args.ply_path), "evaluation"
+        )
+
+    run_evaluation(
+        dataset_dir=args.dataset_dir,
+        traj_path=args.traj_path,
+        ply_path=args.ply_path,
+        out_dir=args.out_dir,
+    )

@@ -13,11 +13,9 @@ https://tanksandtemples.org/download/
 
 **Step 2**. Install Open3D. Follow instructions in http://open3d.org/docs/getting_started.html
 
-**Step 3**. Clone this repository and follow instructions in ``setup.py``.
-
-**Step 4**. Run the evaluation script and grab some coffee.
+**Step 3**. Run the evaluation script and grab some coffee.
 ```
-python run.py
+python run.py --dataset-dir C:/TanksAndTemples/evaluation/data/Ignatius --traj-path C:/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP_SfM.log --ply-path C:/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP.ply
 ```
 Output (evaluation of Ignatius):
 ```
@@ -76,4 +74,4 @@ f-score : 0.7806
 |--|--|
 | ``Ignatius.precision.ply``  | ``Ignatius.recall.ply`` |
 
-(3D visualization of precision and recall. Each mesh is color coded using jet colormap)
+(3D visualization of precision and recall. Each mesh is color coded using hot colormap)
