@@ -143,18 +143,18 @@ def generate_file_md5X(filename, blocksize=2**20):
 
 
 def generate_md5_file(md5_check_fn, scene_list):
-	md5_check = open(md5_check_fn, 'wb')
+	md5_check = open(md5_check_fn, 'w')
 	for scene in scene_list:
 		ply_file = scene + '.ply'
 		log_file = scene + '.log'
 		if os.path.isfile(ply_file):
 			md5_ply_file = generate_file_md5(ply_file, blocksize=2**20)
 		else:
-			md5_ply_file = ''
+			md5_ply_file = ''.encode('ascii')
 		if os.path.isfile(log_file):
 			md5_log_file = generate_file_md5(log_file, blocksize=2**20)
 		else:
-			md5_log_file = ''
+			md5_log_file = ''.encode('ascii')
 		content_md5_log = base64.b64encode(md5_log_file)
 		content_md5_ply = base64.b64encode(md5_ply_file)
 		print('md5_ply_file: ', ply_file, content_md5_ply)
