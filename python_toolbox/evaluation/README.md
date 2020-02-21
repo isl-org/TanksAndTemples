@@ -15,17 +15,17 @@ https://tanksandtemples.org/download/
 
 **Step 3**. Run the evaluation script and grab some coffee.
 ```
-python run.py --dataset-dir C:/TanksAndTemples/evaluation/data/Ignatius --traj-path C:/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP_SfM.log --ply-path C:/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP.ply
+python run.py --dataset-dir path/to/TanksAndTemples/evaluation/data/Ignatius --traj-path path/to/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP_SfM.log --ply-path path/to/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP.ply
 ```
 Output (evaluation of Ignatius):
 ```
 ===========================
 Evaluating Ignatius
 ===========================
-C:/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP.ply
+path/to/TanksAndTemples/evaluation/data/Ignatius/Ignatius_COLMAP.ply
 Reading PLY: [========================================] 100%
 Read PointCloud: 6929586 vertices.
-C:/TanksAndTemples/evaluation/data/Ignatius/Ignatius.ply
+path/to/TanksAndTemples/evaluation/data/Ignatius/Ignatius.ply
 Reading PLY: [========================================] 100%
 :
 ICP Iteration #0: Fitness 0.9980, RMSE 0.0044
@@ -43,7 +43,7 @@ ICP Iteration #10: Fitness 0.9979, RMSE 0.0042
 Cropping geometry: [========================================] 100%
 Pointcloud down sampled from 6929586 points to 1449840 points.
 Pointcloud down sampled from 1449840 points to 1365628 points.
-C:/TanksAndTemples/evaluation/data/Ignatius/evaluation//Ignatius.precision.ply
+path/to/TanksAndTemples/evaluation/data/Ignatius/evaluation//Ignatius.precision.ply
 Cropping geometry: [========================================] 100%
 Pointcloud down sampled from 5016769 points to 4957123 points.
 Pointcloud down sampled from 4957123 points to 4181506 points.
@@ -75,3 +75,9 @@ f-score : 0.7806
 | ``Ignatius.precision.ply``  | ``Ignatius.recall.ply`` |
 
 (3D visualization of precision and recall. Each mesh is color coded using hot colormap)
+
+# Requirements
+
+- Python 3
+- open3d v0.9.0
+- matplotlib
