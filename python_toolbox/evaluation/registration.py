@@ -62,14 +62,12 @@ def gen_sparse_trajectory(mapping, f_trajectory):
     return sparse_traj
 
 
-def trajectory_alignment(
-    map_file, traj_to_register, gt_traj_col, gt_trans, scene
-):
+def trajectory_alignment(map_file, traj_to_register, gt_traj_col, gt_trans,
+                         scene):
     traj_pcd_col = convert_trajectory_to_pointcloud(gt_traj_col)
     traj_pcd_col.transform(gt_trans)
     corres = o3d.utility.Vector2iVector(
-        np.asarray(list(map(lambda x: [x, x], range(len(gt_traj_col)))))
-    )
+        np.asarray(list(map(lambda x: [x, x], range(len(gt_traj_col))))))
     rr = o3d.registration.RANSACConvergenceCriteria()
     rr.max_iteration = 100000
     rr.max_validation = 100000
@@ -82,13 +80,11 @@ def trajectory_alignment(
         traj_to_register_pcd = convert_trajectory_to_pointcloud(traj_col2)
     else:
         traj_to_register_pcd = convert_trajectory_to_pointcloud(
-            traj_to_register
-        )
+            traj_to_register)
     randomvar = 0.0
     nr_of_cam_pos = len(traj_to_register_pcd.points)
     rand_number_added = np.asanyarray(traj_to_register_pcd.points) * (
-        np.random.rand(nr_of_cam_pos, 3) * randomvar - randomvar / 2.0 + 1
-    )
+        np.random.rand(nr_of_cam_pos, 3) * randomvar - randomvar / 2.0 + 1)
     list_rand = list(rand_number_added)
     traj_to_register_pcd_rand = o3d.geometry.PointCloud()
     for elem in list_rand:
@@ -108,11 +104,11 @@ def trajectory_alignment(
 
 
 def crop_and_downsample(
-    pcd,
-    crop_volume,
-    down_sample_method="voxel",
-    voxel_size=0.01,
-    trans=np.identity(4),
+        pcd,
+        crop_volume,
+        down_sample_method="voxel",
+        voxel_size=0.01,
+        trans=np.identity(4),
 ):
     pcd_copy = copy.deepcopy(pcd)
     pcd_copy.transform(trans)
@@ -141,12 +137,13 @@ def registration_unif(
     if verbose:
         print("[Registration] threshold: %f" % threshold)
         o3d.utility.set_verbosity_level(o3d.utility.VerbosityLevel.Debug)
-    s = crop_and_downsample(
-        source, crop_volume, down_sample_method="uniform", trans=init_trans
-    )
-    t = crop_and_downsample(
-        gt_target, crop_volume, down_sample_method="uniform"
-    )
+    s = crop_and_downsample(source,
+                            crop_volume,
+                            down_sample_method="uniform",
+                            trans=init_trans)
+    t = crop_and_downsample(gt_target,
+                            crop_volume,
+                            down_sample_method="uniform")
     reg = o3d.registration.registration_icp(
         s,
         t,
@@ -170,10 +167,8 @@ def registration_vol_ds(
     verbose=True,
 ):
     if verbose:
-        print(
-            "[Registration] voxel_size: %f, threshold: %f"
-            % (voxel_size, threshold)
-        )
+        print("[Registration] voxel_size: %f, threshold: %f" %
+              (voxel_size, threshold))
         o3d.utility.set_verbosity_level(o3d.utility.VerbosityLevel.Debug)
     s = crop_and_downsample(
         source,

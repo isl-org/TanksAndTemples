@@ -75,12 +75,8 @@ def plot_graph(
     ax.grid(True)
     plt.rcParams["figure.figsize"] = plt_size
     plt.rc("axes", prop_cycle=cycler("color", ["r", "g", "b", "y"]))
-    plt.title(
-        "Precision and Recall: "
-        + scene
-        + ", "
-        + "%02.2f f-score" % (fscore * 100)
-    )
+    plt.title("Precision and Recall: " + scene + ", " + "%02.2f f-score" %
+              (fscore * 100))
     plt.axvline(x=dist_threshold, c="black", ls="dashed", linewidth=2.0)
 
     plt.ylabel("# of points (%)", fontsize=15)
@@ -102,11 +98,9 @@ def plot_graph(
     ax.legend(loc="center left", bbox_to_anchor=(1, 0.5))
     plt.setp(ax.get_legend().get_texts(), fontsize=pfontsize)
     png_name = mvs_outpath + "/PR_{0}_@d_th_0_{1}.png".format(
-        scene, "%04d" % (dist_threshold * 10000)
-    )
+        scene, "%04d" % (dist_threshold * 10000))
     pdf_name = mvs_outpath + "/PR_{0}_@d_th_0_{1}.pdf".format(
-        scene, "%04d" % (dist_threshold * 10000)
-    )
+        scene, "%04d" % (dist_threshold * 10000))
 
     # save figure and display
     f.savefig(png_name, format="png", bbox_inches="tight")
