@@ -140,9 +140,8 @@ def EvaluateHisto(
         cum_source,
         edges_target,
         cum_target,
-    ] = get_f1_score_histo2(
-        threshold, filename_mvs, plot_stretch, distance1, distance2
-    )
+    ] = get_f1_score_histo2(threshold, filename_mvs, plot_stretch, distance1,
+                            distance2)
     np.savetxt(filename_mvs + "/" + scene_name + ".recall.txt", cum_target)
     np.savetxt(filename_mvs + "/" + scene_name + ".precision.txt", cum_source)
     np.savetxt(
@@ -161,19 +160,20 @@ def EvaluateHisto(
     ]
 
 
-def get_f1_score_histo2(
-    threshold, filename_mvs, plot_stretch, distance1, distance2, verbose=True
-):
+def get_f1_score_histo2(threshold,
+                        filename_mvs,
+                        plot_stretch,
+                        distance1,
+                        distance2,
+                        verbose=True):
     print("[get_f1_score_histo2]")
     dist_threshold = threshold
     if len(distance1) and len(distance2):
 
         recall = float(sum(d < threshold for d in distance2)) / float(
-            len(distance2)
-        )
+            len(distance2))
         precision = float(sum(d < threshold for d in distance1)) / float(
-            len(distance1)
-        )
+            len(distance1))
         fscore = 2 * recall * precision / (recall + precision)
         num = len(distance1)
         bins = np.arange(0, dist_threshold * plot_stretch, dist_threshold / 100)

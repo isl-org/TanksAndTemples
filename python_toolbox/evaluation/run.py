@@ -86,9 +86,8 @@ def run_evaluation(dataset_dir, traj_path, ply_path, out_dir):
     traj_to_register = read_trajectory(traj_path)
     gt_traj_col = read_trajectory(colmap_ref_logfile)
 
-    trajectory_transform = trajectory_alignment(
-        map_file, traj_to_register, gt_traj_col, gt_trans, scene
-    )
+    trajectory_transform = trajectory_alignment(map_file, traj_to_register,
+                                                gt_traj_col, gt_trans, scene)
 
     # Refine alignment by using the actual GT and MVS pointclouds
     vol = o3d.visualization.read_selection_polygon_volume(cropfile)
@@ -96,12 +95,10 @@ def run_evaluation(dataset_dir, traj_path, ply_path, out_dir):
     dist_threshold = dTau
 
     # Registration refinment in 3 iterations
-    r2 = registration_vol_ds(
-        pcd, gt_pcd, trajectory_transform, vol, dTau, dTau * 80, 20
-    )
-    r3 = registration_vol_ds(
-        pcd, gt_pcd, r2.transformation, vol, dTau / 2.0, dTau * 20, 20
-    )
+    r2 = registration_vol_ds(pcd, gt_pcd, trajectory_transform, vol, dTau,
+                             dTau * 80, 20)
+    r3 = registration_vol_ds(pcd, gt_pcd, r2.transformation, vol, dTau / 2.0,
+                             dTau * 20, 20)
     r = registration_unif(pcd, gt_pcd, r3.transformation, vol, 2 * dTau, 20)
 
     # Histogramms and P/R/F1
@@ -161,7 +158,8 @@ if __name__ == "__main__":
         "--traj-path",
         type=str,
         required=True,
-        help="path to trajectory file. See `convert_to_logfile.py` to create this file.",
+        help=
+        "path to trajectory file. See `convert_to_logfile.py` to create this file.",
     )
     parser.add_argument(
         "--ply-path",
@@ -173,14 +171,14 @@ if __name__ == "__main__":
         "--out-dir",
         type=str,
         default="",
-        help="output directory, default: an evaluation directory is created in the directory of the ply file",
+        help=
+        "output directory, default: an evaluation directory is created in the directory of the ply file",
     )
     args = parser.parse_args()
 
     if args.out_dir.strip() == "":
-        args.out_dir = os.path.join(
-            os.path.dirname(args.ply_path), "evaluation"
-        )
+        args.out_dir = os.path.join(os.path.dirname(args.ply_path),
+                                    "evaluation")
 
     run_evaluation(
         dataset_dir=args.dataset_dir,
